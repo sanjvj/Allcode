@@ -477,3 +477,711 @@ class MinStack {
 
 
 
+            SAMPLE PROGRAM 2:
+            Input
+            ["push","push","pop","push","push“,”peek”,"push","getMin","pop","getMin"]
+            [ [2 ], [3], [ ], [4], [ -1], [ ], [6], [ ], [ ], [ ] ]
+            Output
+            [-1]
+            Explanation
+            MinStack minStack = new MinStack();
+            minStack.push(2);
+            minStack.push(3);
+            minStack.pop();
+            minStack.push(4);
+            minStack.push(-1);
+            minStack.peek();
+            minStack.push(6);
+            minStack.getMin(); // return -1
+            minStack.pop();
+            minStack.getMin(); // return -1
+
+
+        
+
+CODE:
+
+
+import java.util.Stack;
+class MinStack {
+    private Stack < Integer > stack;
+    private Stack < Integer > minStack;
+    public MinStack() {
+        stack = new Stack < > ();
+        minStack = new Stack < > ();
+    }
+    public void push(int val) {
+        stack.push(val);
+        if (minStack.isEmpty() || val <=
+            minStack.peek()) {
+            //or opreration for check any one is true
+            minStack.push(val);
+        }
+    }
+    public void pop() {
+        if (!stack.isEmpty()) {
+            if (stack.peek().equals(minStack.peek())) {
+                minStack.pop();
+            }
+            stack.pop();
+        }
+    }
+    public int top() {
+        return stack.peek();
+    }
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        MinStack minStack = new MinStack();
+        minStack.push(2);
+        minStack.push(3);
+        minStack.pop();
+        minStack.push(4);
+        minStack.push(-1);
+        minStack.top();
+        minStack.push(6);
+        minStack.getMin();
+        minStack.pop();
+        minStack.getMin();
+        System.out.println("Current Min: " + minStack.getMin());
+    }
+}
+
+
+
+CELEBRITY PROBLEM:
+
+SAMPLE PROGRAM 2
+INPUT
+3
+0 1 0
+0 0 0 
+1 0 0
+OUTPUT
+No Celebrity
+
+
+CODE:
+
+import java.io.*;
+import java.util.*;
+class Main {
+    public static void main(String args[])
+    throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int[][] relationshipMatrix = new
+        int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                relationshipMatrix[i][j] =
+                    sc.nextInt();
+            }
+        }
+        int celebrityId = new
+        Solution().findCelebrity(relationshipMatrix,
+            N);
+        if (celebrityId != -1) {
+            System.out.println("Celebrity id: " +
+                celebrityId);
+        } else {
+            System.out.println("No 
+                Celebrity ");
+            }
+        }
+    }
+    class Solution {
+        int findCelebrity(int M[][], int n) {
+            int candidate = 0;
+            for (int i = 1; i < n; i++) {
+                if (M[candidate][i] == 1) {
+                    candidate = i;
+                }
+            }
+            for (int i = 0; i < n; i++) {
+                if (i != candidate &&
+                    (M[candidate][i] == 1 || M[i][candidate] ==
+                        0)) {
+                    return -1;
+                }
+            }
+            return candidate;
+        }
+    }
+
+
+
+
+
+
+
+
+ITERATIVE TOWER OF HANOI:
+
+
+import java.util.Stack;
+public class Main {
+    static void towerOfHanoi(int numDisks, char source, char auxiliary, char destination) {
+        // Create three stacks to represent the 
+        three rods
+        Stack < Integer > sourceStack = new
+        Stack < > ();
+        Stack < Integer > auxiliaryStack = new
+        Stack < > ();
+        Stack < Integer > destinationStack = new
+        Stack < > ();
+        // Initialize the source rod with disks
+        for (int i = numDisks; i >= 1; i--) {
+            sourceStack.push(i);
+        }
+        // Total number of moves required
+        int totalMoves = (int) Math.pow(2,
+            numDisks) - 1;
+        // Determine the order of pegs for 
+        odd / even number of disks
+        char temp;
+        if (numDisks % 2 == 0) {
+            temp = auxiliary;
+            auxiliary = destination;
+            destination = temp;
+        }
+        // Perform iterative Tower of Hanoi
+        for (int move = 1; move <=
+            totalMoves; move++) {
+            if (move % 3 == 1) {
+                moveDisk(sourceStack,
+                    destinationStack, source, destination);
+            } else if (move % 3 == 2) {
+                moveDisk(sourceStack,
+                    auxiliaryStack, source, auxiliary);
+            } else if (move % 3 == 0) {
+                moveDisk(auxiliaryStack,
+                    destinationStack, auxiliary, destination);
+            }
+        }
+    }
+    static void moveDisk(Stack < Integer >
+        sourceStack, Stack < Integer > destinationStack,
+        char source, char destination) {
+        if (!sourceStack.isEmpty() &&
+            (destinationStack.isEmpty() ||
+                sourceStack.peek() < destinationStack.peek())) {
+
+            destinationStack.push(sourceStack.pop());
+            System.out.println("Move disk " +
+                destinationStack.peek() + " from " + source + " 
+                to " + destination);
+            }
+            else {
+                sourceStack.push(destinationStack.pop());
+                System.out.println("Move disk " +
+                    sourceStack.peek() + " from " +
+                    destination + " to " + source);
+            }
+        }
+        public static void main(String[] args) {
+            int numDisks = 3; // Change the 
+            number of disks as needed
+            char source = 'A';
+            char auxiliary = 'B';
+            char destination = 'C';
+            towerOfHanoi(numDisks, source,
+                auxiliary, destination);
+        }
+    }
+
+
+
+
+STOCK SPAN - BRUTE FORCE :
+
+
+import java.util.Arrays;
+public class Main {
+    public int[] calculateSpan(int[] stockPrices) {
+        int n = stockPrices.length;
+        int[] span = new int[n];
+        span[0] = 1; // The span of the first 
+        day is always 1.
+        for (int i = 1; i < n; i++) {
+            span[i] = 1; // Initialize the 
+            span
+            for the current day.
+            int j = i - 1;
+            while (j >= 0 && stockPrices[i] >=
+                stockPrices[j]) {
+                span[i]++;
+                j--;
+
+            }
+        }
+        return span;
+    }
+    public static void main(String[] args) {
+        Main calculator = new Main();
+        int[] stockPrices = {
+            100,
+            80,
+            60,
+            70,
+            60,
+            75,
+            85
+        };
+        int[] spans =
+            calculator.calculateSpan(stockPrices);
+        System.out.println("Stock Prices: " +
+            Arrays.toString(stockPrices));
+        System.out.println("Stock Spans: " +
+            Arrays.toString(spans));
+    }
+}
+
+
+
+STOCK SPAN - STACK BASED APPROACH
+
+
+import java.util.Stack;
+import java.util.Arrays;
+public class Main {
+    public int[] calculateSpan(int[] stockPrices) {
+        int n = stockPrices.length;
+        int[] span = new int[n];
+        Stack < Integer > stack = new
+        Stack < > ();
+        // The span of the first day is 
+        always 1.
+        span[0] = 1;
+        stack.push(0);
+        for (int i = 1; i < n; i++) {
+            while (!stack.isEmpty() && stockPrices[i] >=
+                stockPrices[stack.peek()]) {
+                stack.pop();
+            }
+            span[i] = stack.isEmpty() ? i + 1 : i -
+                stack.peek();
+            // Push the current index onto the stack.
+            stack.push(i);
+        }
+        return span;
+    }
+    public static void main(String[] args) {
+        Main calculator = new Main();
+        int[] stockPrices = {
+            100,
+            80,
+            60,
+            70,
+            60,
+            75,
+            85
+        };
+        int[] spans =
+            calculator.calculateSpan(stockPrices);
+        System.out.println("Stock Prices: " +
+            Arrays.toString(stockPrices));
+        System.out.println("Stock Spans: " +
+            Arrays.toString(spans));
+    }
+}
+
+
+
+
+PRIORITY QUEUE USING DOUBLY LINKED LIST:
+
+SAMPLE 1:INPUT OUTPUT
+Sample Input 1:
+priorityQueue.insert("Task A", 3);
+priorityQueue.insert("Task B", 1);
+priorityQueue.insert("Task C", 2);
+Sample Output 1:
+Highest-priority task: Task B
+Executing: Task B
+Executing: Task C
+Executing: Task A
+
+
+
+
+CODE:
+
+class PriorityQueueNode < T > {
+    T data;
+    int priority;
+    PriorityQueueNode < T > prev;
+    PriorityQueueNode < T > next;
+    public PriorityQueueNode(T data, int priority) {
+        this.data = data;
+        this.priority = priority;
+    }
+}
+class PriorityQueue < T > {
+    private PriorityQueueNode < T > head;
+    private PriorityQueueNode < T > tail;
+    public PriorityQueue() {
+        head = null;
+        tail = null;
+    }
+    public void insert(T data, int priority) {
+        PriorityQueueNode < T > newNode = new
+        PriorityQueueNode < > (data, priority);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else if (priority < head.priority) {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        } else {
+            PriorityQueueNode < T > current =
+                head;
+            while (current.next != null &&
+                current.next.priority <= priority) {
+                current = current.next;
+            }
+            newNode.prev = current;
+            newNode.next = current.next;
+            if (current.next != null) {
+                current.next.prev = newNode;
+            } else {
+                tail = newNode;
+            }
+            current.next = newNode;
+        }
+    }
+    public T delete() {
+        if (head == null) {
+            return null;
+        }
+        T data = head.data;
+        head = head.next;
+        if (head != null) {
+            head.prev = null;
+        } else {
+            tail = null;
+        }
+        return data;
+    }
+    public T peek() {
+        if (head == null) {
+            return null;
+        }
+        return head.data;
+    }
+    public boolean isEmpty() {
+        return head == null;
+    }
+    // Other utility methods can be added as 
+    needed.
+}
+public class Main {
+    public static void main(String[] args) {
+        PriorityQueue < String > priorityQueue = new PriorityQueue < > ();
+
+        priorityQueue.insert("Task A", 3);
+        priorityQueue.insert("Task B", 1);
+        priorityQueue.insert("Task C", 2);
+        System.out.println("Highest-priority task: " + priorityQueue.peek());
+        while (!priorityQueue.isEmpty()) {
+            System.out.println("Executing: " + priorityQueue.delete());
+        }
+    }
+}
+
+
+
+SORT WITHOUT EXTRA SPACE:
+
+import java.util.LinkedList;
+import java.util.Queue;
+public class SortingAQueueWithoutExtraSpace {
+    private static void sortQueue(Queue < Integer >
+        queue) {
+        int n = queue.size();
+        for (int i = 0; i < n; i++) {
+            // Find the index of smallest element from 
+            the unsorted queue
+            int minIndex = -1;
+            int minValue = Integer.MAX_VALUE;
+            for (int j = 0; j < n; j++) {
+                int currValue = queue.poll();
+                // Find the minimum value index only 
+                from unsorted queue
+                if (currValue < minValue && j < (n - i)) {
+                    minValue = currValue;
+                    minIndex = j;
+                }
+                queue.add(currValue);
+            }
+            // Remove min value from queue
+            for (int j = 0; j < n; j++) {
+                int currValue = queue.poll();
+                if (j != minIndex) {
+                    queue.add(currValue);
+                }
+            }
+            // Add min value to the end of the queue
+            queue.add(minValue);
+        }
+        // Print the sorted queue
+        for (Integer i: queue) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        Queue < Integer > q1 = new LinkedList < > ();
+        q1.add(10);
+        q1.add(7);
+        q1.add(2);
+        q1.add(8);
+        q1.add(6);
+        sortQueue(q1);
+    }
+}
+
+
+
+
+MAXIMUM SLIDING WINDOW - NAIVE APPROACH:
+
+import java.util.LinkedList;
+import java.util.Queue;
+public class SortingAQueueWithoutExtraSpace {
+    private static void sortQueue(Queue < Integer >
+        queue) {
+        int n = queue.size();
+        for (int i = 0; i < n; i++) {
+            // Find the index of smallest element from 
+            the unsorted queue
+            int minIndex = -1;
+            int minValue = Integer.MAX_VALUE;
+            for (int j = 0; j < n; j++) {
+                int currValue = queue.poll();
+                // Find the minimum value index only 
+                from unsorted queue
+                if (currValue < minValue && j < (n - i)) {
+                    minValue = currValue;
+                    minIndex = j;
+                }
+                queue.add(currValue);
+            }
+            // Remove min value from queue
+            for (int j = 0; j < n; j++) {
+                int currValue = queue.poll();
+                if (j != minIndex) {
+                    queue.add(currValue);
+                }
+            }
+            // Add min value to the end of the queue
+            queue.add(minValue);
+        }
+        // Print the sorted queue
+        for (Integer i: queue) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        Queue < Integer > q1 = new LinkedList < > ();
+        q1.add(10);
+        q1.add(7);
+        q1.add(2);
+        q1.add(8);
+        q1.add(6);
+        sortQueue(q1);
+    }
+}
+
+
+MAXIMUM SLIDING WINDOW - SELF BALANCING TREES:
+
+import java.util.*;
+public class Main {
+    public static int[]
+    maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length ==
+            0) return new int[0];
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        TreeSet < Integer > treeSet = new
+        TreeSet < > ();
+        for (int i = 0; i < n; i++) {
+            if (i >= k) {
+                treeSet.remove(nums[i - k]);
+            }
+            treeSet.add(nums[i]);
+            if (i >= k - 1) {
+                result[i - k + 1] = treeSet.last();
+            }
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        int[] nums = {
+            1,
+            3,
+            -1,
+            -3,
+            5,
+            3,
+            6,
+            7
+        };
+        int k = 3;
+        int[] result =
+            maxSlidingWindow(nums, k);
+        for (int num: result) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+
+SLIDING WINDOW - MAXIMUM HEAP:
+
+import java.util.*;
+public class Main {
+    public static int[]
+    maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length ==
+            0) return new int[0];
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        PriorityQueue < Integer > maxHeap = new
+        PriorityQueue < > (Collections.reverseOrder());
+        for (int i = 0; i < n; i++) {
+            if (i >= k) {
+                maxHeap.remove(nums[i - k]);
+            }
+            maxHeap.offer(nums[i]);
+            if (i >= k - 1) {
+
+                result[i - k + 1] = maxHeap.peek();
+            }
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        int[] nums = {
+            1,
+            3,
+            -1,
+            -3,
+            5,
+            3,
+            6,
+            7
+        };
+        int k = 3;
+        int[] result =
+            maxSlidingWindow(nums, k);
+        for (int num: result) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+
+MAXIMUM SLIDING WINDOW - DEQUE:
+
+import java.util.*;
+public class Main {
+    public static int[]
+    maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length ==
+            0) return new int[0];
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        Deque < Integer > deque = new
+        LinkedList < > ();
+        for (int i = 0; i < n; i++) {
+            while (!deque.isEmpty() &&
+                deque.peek() < i - k + 1) {
+                deque.poll(); // Remove 
+                indices that are out of the current window.
+            }
+            while (!deque.isEmpty() &&
+                nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast(); // Remove 
+                smaller elements at the end of the Deque.
+
+            }
+            deque.offer(i); // Add the 
+            current index to the end of the Deque.
+            if(i >= k - 1) {
+                result[i - k + 1] =
+                    nums[deque.peek()]; // Maximum element at 
+                the front.
+            }
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        int[] nums = {
+            1,
+            3,
+            -1,
+            -3,
+            5,
+            3,
+            6,
+            7
+        };
+        int k = 3;
+        int[] result =
+            maxSlidingWindow(nums, k);
+        for (int num: result) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+
+
+
+STACK PERMUTATION:
+
+
+import java.util.Stack;
+public class Main {
+    public static boolean
+    isStackPermutation(int[] original, int[] target) {
+        Stack < Integer > stack = new
+        Stack < > ();
+        int i = 0;
+        for (int element: original) {
+            stack.push(element);
+            while (!stack.isEmpty() &&
+                stack.peek() == target[i]) {
+                stack.pop();
+                i++;
+            }
+        }
+        return stack.isEmpty();
+    }
+    public static void main(String[] args) {
+        int[] original = {
+            1,
+            2,
+            3
+        };
+        int[] target = {
+            2,
+            1,
+            3
+        };
+        boolean result =
+            isStackPermutation(original, target);
+        System.out.println("Is it a 
+            stack permutation ? " + result);
+        }
+    }
